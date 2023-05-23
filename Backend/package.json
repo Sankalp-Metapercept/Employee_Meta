@@ -1,7 +1,7 @@
 {
   "name": "ems",
   "version": "1.0.0",
-  "description": "Create an Employee Managment System Using Reactjs Bootstarp Nodejs Expressjs MongodB Mongoose",
+  "description": "Create an Employee Management System Using Reactjs Bootstarp Nodejs Expressjs MongodB Mongoose",
   "main": "app.js",
   "scripts": {
     "start": "nodemon server.js",
