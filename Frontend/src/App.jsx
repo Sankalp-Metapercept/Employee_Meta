@@ -1,4 +1,4 @@
-// import './App.css'
+import './App.css'
 import AllRoutes from './Components/AllRoutes'
 import Header from './Components/Header'
 function App() {
@@ -6,7 +6,9 @@ function App() {
   return (
     <>
       <Header/>
-      <AllRoutes/>
+      <div className='App_upper'>
+        <AllRoutes/>
+      </div>
     </>
   )
 }

@@ -8,24 +8,26 @@ function AuthContext({children}){
 
     const [state, setState] = useState({
       isAuth: false,
-      token: null
-    })
+      token: JSON.parse(window.localStorage.getItem("Token")) || null 
+    });
     
-   async function login(token){
-    
+   async function login(token)
+   {
       setState({
         isAuth: true,
         token: token
       })
+     window.localStorage.setItem('Token', JSON.stringify(token)); 
    }
 
-   async function logout(){
-       
-         setState({
-           isAuth: false,
-           token: null
-         })
-      }
+   async function logout()
+   {
+     setState({
+      isAuth: false,
+      token: null
+        })
+        localStorage.removeItem('Token');
+   }
 
   return (
     <GlobalInfo.Provider value={{authState : state , login, logout}} >

@@ -1,46 +1,44 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, { useContext } from "react";
+/* eslint-disable no-unused-vars */
+import React from "react";
 import { Link } from "react-router-dom";
 import "../App.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import {GlobalInfo} from '../Context/AuthContext'
-function Login() {
 
- const InitialStates = {
+const InitialStates = {
+   name_data: "",
    email: "",
-   password: "",
- };
-  
-  const {authState,login} = useContext(GlobalInfo);
+  salary: "",
+  designation: "",
+};
 
-console.log(authState);
-
-   const Nav = useNavigate();
+function Create() {
   const [formstate, setFormState] = React.useState(InitialStates);
 
- const HandleChange = (e) => {
-   const { name } = e.target;
-   setFormState((oldState) => {
-     return {
-       ...oldState,
-       [name]: e.target.value,
-     };
-   });
- };
- 
-  const { email, password } = formstate;
+  const Nav = useNavigate();
+
+  const handleChange = (e) => {
+    const { name } = e.target;
+    setFormState((oldState) => {
+      return {
+        ...oldState,
+        [name]: e.target.value,
+      };
+    });
+  };
+  const {name_data,  email, salary, designation } = formstate;
 
   async function HandleSubmit(e) {
     e.preventDefault();
-    try {  
-     // eslint-disable-next-line no-unused-vars
-     let log = await axios.post("http://127.0.0.1:8000/api/v1/auth/login",{email:email, password:password});
-     if(log.data.accessToken){
-      login(log.data.accessToken);
+    try {
+      let register = await axios.post(`http://127.0.0.1:8000/api/v1/employee`, {
+        name: name_data,
+        email: email,
+        salary: salary,
+        designation: designation,
+      });
       Nav("/dash");
-     } 
-      console.log(log.data.accessToken);
     } catch (error) {
       alert(error.response.data.message);
     }
@@ -59,7 +57,7 @@ console.log(authState);
         }}
       >
         <div>
-          <h3>Login</h3>
+          <h3>ADD</h3>
         </div>
         <div style={{ textAlign: "center" }}>
           <Link to={"/"}>
@@ -76,42 +74,62 @@ console.log(authState);
       <form onSubmit={HandleSubmit} style={{ padding: "20px" }}>
         <div className="mb-3">
           <label htmlFor="exampleInputEmail1" className="form-label">
-            Email address
+            Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            value={formstate.name}
+            name="name_data"
+            onChange={handleChange}
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+          />
+          <label htmlFor="exampleInputEmail1" className="form-label">
+            Email
           </label>
           <input
             type="email"
             className="form-control"
             value={formstate.email}
             name="email"
-            onChange={HandleChange}
+            onChange={handleChange}
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
           />
-          <div id="emailHelp" className="form-text">
-            We'll never share your email with anyone else.
-          </div>
-        </div>
-        <div className="mb-3">
           <label htmlFor="exampleInputPassword1" className="form-label">
-            Password
+            Salary
           </label>
           <input
-            type="password"
+            type="number"
             className="form-control"
-            value={formstate.password}
-            name="password"
-            onChange={HandleChange}
+            value={formstate.salary}
+            name="salary"
+            onChange={handleChange}
+            id="exampleInputPassword1"
+          />
+          <label htmlFor="exampleInputPassword1" className="form-label">
+            Designation
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            value={formstate.designation}
+            name="designation"
+            onChange={handleChange}
             id="exampleInputPassword1"
           />
         </div>
-        <button type="submit" value={"submit"} className="btn btn-primary">
-          Login
+        <button
+          type="submit"
+          value={"submit"}
+          className="btn btn-outline-primary"
+        >
+          Submit
         </button>
       </form>
-      <div id="emailHelp" className="form-text">
-        If you Don't have account please <Link to={"/register"}>Register</Link>
-      </div>
     </div>
   );
 }
-export default Login;
+
+export default Create;
