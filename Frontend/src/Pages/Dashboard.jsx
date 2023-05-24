@@ -1,12 +1,17 @@
+/* eslint-disable no-undef */
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect, useCallback } from "react";
 import Table from "react-bootstrap/Table";
 import "../App.css";
 import axios from "axios";
-import {useNavigate} from 'react-router-dom';
+import {Link,useNavigate} from 'react-router-dom';
 function Dashboard() {
+
   // eslint-disable-next-line no-unused-vars
   const [user, setUser] = useState([] || "");
+  const [SortBy, setSortBy] = useState("salary" || null);
+const [SortOrder, setOrder] = useState("asc" || null);
+const [filter, setFilter] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const Nav = useNavigate();
@@ -15,7 +20,11 @@ function Dashboard() {
     try {
       setIsLoading(true);
       setError(true);
-      let res = await axios.get(`http://127.0.0.1:8000/api/v1/employee`);
+      let res = await axios.get(
+        filter
+          ? `http://127.0.0.1:8000/api/v1/employee?designation=${filter}`
+          : `http://127.0.0.1:8000/api/v1/employee?Sort=${SortBy}&SortOrder=${SortOrder}`
+      );
       setUser(res.data.data);
       setIsLoading(false);
       setError(false);
@@ -46,8 +55,21 @@ function Dashboard() {
 
   useEffect(() => {
     Load_Data();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
+ const HandleSort = async(data)=>{
+  if(data === 'desc'){
+        setOrder('desc');
+  }
+  else{
+    setOrder('asc');
+  }
+ }
+
+ const HandleFliter = async(data)=>{
+   setFilter(data);
+ }
 
   if (!isLoading)
     return (
@@ -66,6 +88,52 @@ function Dashboard() {
 
        return (
          <div className="Dash_Upper">
+           <div className="dash_header">
+             <div className="Dash_upper_Header">
+               <button
+                 onClick={() => HandleSort(event.target.value)}
+                 value={"desc"}
+                 type="button"
+                 className="btn btn-outline-secondary"
+               >
+                 Sort_By_Salary_HTL
+               </button>
+               <button
+                 onClick={() => HandleSort(event.target.value)}
+                 value={"asc"}
+                 type="button"
+                 className="btn btn-outline-success"
+               >
+                 Sort_By_Salary_LTH
+               </button>
+             </div>
+             <div className="Dash_upper_Header">
+               <button
+                 onClick={() => HandleFliter(event.target.value)}
+                 value={"Frontend"}
+                 type="button"
+                 className="btn btn-outline-secondary"
+               >
+                 Frontend
+               </button>
+               <button
+                 onClick={() => HandleFliter(event.target.value)}
+                 value={"Backend"}
+                 type="button"
+                 className="btn btn-outline-success"
+               >
+                 Backend
+               </button>
+               <button
+                 onClick={() => HandleFliter(event.target.value)}
+                 value={"MERN"}
+                 type="button"
+                 className="btn btn-outline-success"
+               >
+                 MERN
+               </button>
+             </div>
+           </div>
            <Table className="table_upper">
              <thead>
                <tr>
@@ -81,7 +149,12 @@ function Dashboard() {
                {user.map((el, index) => (
                  <tr key={index}>
                    <td>{index + 1}</td>
-                   <td>{el.name}</td>
+                   <Link
+                     to={`/single/${el._id}`}
+                     style={{ textDecoration: "none", color: "black" }}
+                   >
+                     <td>{el.name}</td>
+                   </Link>
                    <td>{el.email}</td>
                    <td>{el.salary}</td>
                    <td>{el.designation}</td>

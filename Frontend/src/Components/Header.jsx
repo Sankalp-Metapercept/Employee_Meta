@@ -26,7 +26,7 @@ function Header() {
             </button>
           </Link>
           <Link to={"/add"}>
-            <button className="btn btn-info" type="submit">
+            <button className="btn btn-warning" type="submit">
               ADD
             </button>
           </Link>
@@ -39,10 +39,10 @@ function Header() {
         <div>
           <Link to={"/"}>
             <img
-              src="https://img.freepik.com/free-vector/people-logo-company-design-gradient-style_698780-603.jpg?size=626&ext=jpg"
+              src="https://lh5.googleusercontent.com/-Z1FSU6dmnew/AAAAAAAAAAI/AAAAAAAAAAA/JgZNZpuqhSY/s44-p-k-no-ns-nd/photo.jpg"
               className="img-fluid"
               alt="..."
-              width={"70px"}
+              width={"50px"}
               height={"50px"}
             ></img>
           </Link>

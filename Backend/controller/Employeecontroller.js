@@ -1,9 +1,24 @@
 const Emp = require("../Model/EmployeeModel");
 
 exports.getEmployee = async(req,res)=>{
+
+  let SortBy = req.query.Sort;
+  let Order = req.query.SortOrder;
+  let Sort = {}
+  if(SortBy && Order){
+     Sort[SortBy] = Order === 'asc' ? 'asc' : 'desc';
+  } 
+
+  let {designation} = req.query
+   let query = {};
+
+   if(designation){
+    query.designation = { $regex: new RegExp(designation, "i") };
+   }
+
+
     try {
-        const Employee = await Emp.find()
-        console.log(Employee);
+        const Employee = await Emp.find(query).sort(Sort).lean();
         return res
         .status(200)
         .json({
@@ -42,7 +57,6 @@ exports.getEmployeeById = async (req, res) => {
 exports.CreateEmployee = async (req, res) =>{
     try {
       const NewEmployee = await Emp.create(req.body);
-      console.log(NewEmployee);
       return res
       .status(201)
       .json({

@@ -6,6 +6,7 @@ import Dashboard from '../Pages/Dashboard'
 import PrivateRoute from './PrivateRoute'
 import Create from "../Pages/Create";
 import Update from "../Pages/Update";
+import Single from '../Pages/single'
 function AllRoutes() {
   return (
     <Routes>
@@ -14,6 +15,7 @@ function AllRoutes() {
       <Route path={'/login'} element={<Login />} />
       <Route path={'/dash'} element={<PrivateRoute><Dashboard /></PrivateRoute>}/>
       <Route path={'/add'} element={<Create />} />
+      <Route path={'/single/:id'} element={<Single />} />
       <Route path={'/edit/:id'} element={<Update />} />
     </Routes>
   );
